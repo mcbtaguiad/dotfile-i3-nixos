@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+pid=$(pgrep -c spotify)
+
+
+case $BLOCK_BUTTON in
+  1) mpris-ctl prev ;;
+  2) mpris-ctl pp ;;
+  3) mpris-ctl next ;;
+esac
+
+play=$(mpris-ctl info  "%artist_name -  %track_name")
+
+if [[ "$pid" -gt "0" ]]
+then
+    echo "" $play
+else
+    
+    echo "" "Spotify"
+    echo
+    echo \#70797C 
+    #839275
+    #575758
+fi
+
+
+
+

@@ -1,0 +1,96 @@
+#theme = "iTerm-Default"
+
+[colors.bright]
+black = "0x4c4c4c"
+blue = "0xa39ec4"
+cyan = "0x9ec3c4"
+green = "0x9ec49f"
+magenta = "0xc49ec4"
+#orange = "0xceb188"
+red = "0xc49ea0"
+white = "0xf5f5f5"
+yellow = "0xc4c19e"
+
+[colors.cursor]
+cursor = "CellForeground"
+text = "CellBackground"
+
+[colors.normal]
+black = "0x262626"
+blue = "0x8f8aac"
+cyan = "0x8aabac"
+green = "0x8aac8b"
+magenta = "0xac8aac"
+#orange = "0xc6a679"
+red = "0xac8a8c"
+white = "0xe7e7e7"
+yellow = "0xaca98a"
+
+[colors.primary]
+background = "0x0f0f0f"
+foreground = "0xf0f0f0"
+
+[colors.search.focused_match]
+background = "0xadd7ff"
+foreground = "0x1b1e28"
+
+[colors.search.matches]
+background = "0xadd7ff"
+foreground = "0x1b1e28"
+
+[colors.selection]
+background = "0x303340"
+text = "CellForeground"
+
+[colors.vi_mode_cursor]
+cursor = "CellForeground"
+text = "CellBackground"
+
+[cursor]
+style = "Underline"
+vi_mode_style = "Underline"
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[font]
+size = 11
+
+[font.bold]
+family = "IBM Plex Mono"
+style = "Bold"
+
+[font.glyph_offset]
+y = 0
+
+[font.italic]
+family = "IBM Plex Mono"
+style = "Italic"
+
+[font.normal]
+family = "IBM Plex Mono"
+style = "Regular"
+
+[font.offset]
+y = 0
+
+[scrolling]
+history = 1000
+multiplier = 3
+
+[window]
+decorations = "none"
+opacity = 0.9
+
+[window.dimensions]
+columns = 80
+lines = 35
+
+[window.padding]
+x = 24
+y = 24
+
+
+
+

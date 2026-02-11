@@ -1,0 +1,19 @@
+#!/usr/bin/env bash 
+# This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
+
+status=$(sudo systemctl status keyboard-backlightd | grep -c 'running')
+lightstatus=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness)
+
+if [[ "$status" -gt "0" ]]
+then
+    sudo systemctl stop keyboard-backlightd
+    pkill -SIGRTMIN+12 i3blocks
+    # brightnessctl --device='tpacpi::kbd_backlight' set 0 &
+    light -s sysfs/leds/tpacpi::kbd_backlight -S 0
+else
+    sudo systemctl start keyboard-backlightd
+    pkill -SIGRTMIN+12 i3blocks
+    light -s sysfs/leds/tpacpi::kbd_backlight -S 0
+    # brightnessctl --device='tpacpi::kbd_backlight' set 0 &
+fi
+exit 0

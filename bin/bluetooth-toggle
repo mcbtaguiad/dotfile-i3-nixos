@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+
+GET_BLUE=$(rfkill list bluetooth | grep yes)
+
+if [[ $GET_BLUE == *"yes"* ]]
+then
+    rfkill unblock bluetooth
+    pkill -SIGRTMIN+6 i3blocks
+    
+else
+    rfkill block bluetooth
+    pkill -SIGRTMIN+6 i3blocks
+ 
+fi
+
+
+
+exit 0
+
+
+
+
+

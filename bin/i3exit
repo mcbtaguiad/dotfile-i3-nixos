@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+lock() {
+  ~/.local/bin/i3lock-custom
+}
+
+case "$1" in
+  lock)
+    lock
+    ;;
+  logout)
+    i3-msg exit
+    ;;
+  suspend)
+    loginctl suspend
+    ;;
+  hibernate)
+    loginctl hibernate
+    ;;
+  reboot)
+    loginctl reboot
+    ;;
+  shutdown)
+    loginctl poweroff
+    ;;
+  *)
+    echo "Usage: $0 {lock|logout|suspend|hibernate|reboot|shutdown}"
+    exit 2
+esac
+                                                                                                                                                
+exit 0

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+icon_color=${icon_color:-}
+
+# Left click
+if [[ "${BLOCK_BUTTON}" -eq 2 ]]; then
+  wpctl set-mute @DEFAULT_AUDIO_SOURCE@  toggle
+# Middle click
+elif [[ "${BLOCK_BUTTON}" -eq 4 ]]; then
+  wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.05+
+# Right click
+elif [[ "${BLOCK_BUTTON}" -eq 5 ]]; then
+  wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.05-
+elif [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
+  i3-msg -q -- exec pavucontrol
+fi
+
+source=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ )
+status=$(echo ${source} | awk -F ' ' '{print $2}')
+statusmute=$(echo ${source} | awk -F ' ' '{print $3}')
+volume_level=$(echo "$status" | awk -F'[ "]' '{ printf "%.0f\n", $1*100 }')
+#volume=$(echo "${statusLine}" | awk -F ' ' '{print $5}' | tr -d '[]%')
+#volume_level=$(amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '[]%')
+#volume_level=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master) | tr -d '%')
+
+if [[ "${statusmute}" != "[MUTED]" ]]; then
+
+  if (( "$volume_level" >= "0" && "$volume_level" <= "33" )); then
+    #echo " ${volume_level}%"
+    echo "MIC ${volume_level}%"
+  elif (( "$volume_level" > "33" && "$volume_level" <= "64" )); then
+    #echo " ${volume_level}%"
+    echo "MIC ${volume_level}%"
+  elif (( "$volume_level" > "64" )); then
+    #echo " ${volume_level}%"
+    echo "MIC ${volume_level}%"
+  fi
+
+
+
+
+else
+  #echo " ${volume_level}%"
+  echo "MIC ${volume_level}%"
+  echo
+  echo $icon_color
+  #echo \#70797C
+fi
+
+
+

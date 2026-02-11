@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
+
+
+#gpsdata=$( gpspipe -w -n 10 |   grep -m 1 lon )
+# gpsdata=$( gpspipe -w | grep -m 1 TPV )
+# lat=$( echo "$gpsdata"  | jsawk 'return this.lat' )
+# lon=$( echo "$gpsdata"  | jsawk 'return this.lon' )
+# alt=$( echo "$gpsdata"  | jsawk 'return this.alt' )
+# dt=$( echo "$gpsdata" | jsawk 'return this.time' )
+# echo "$dt"
+# echo "You are here: $lat, $lon at $alt"
+
+# manual geo api not working
+lat='14.599512'
+lon='120.984222'
+
+#status=$(pgrep redshift)
+status=$(pgrep redshift)
+if [[ -n "$status" ]]
+then
+    
+    #echo patay
+    #redshift -x
+    pkill redshift &
+    #pgrep redshift | xargs -n1 kill -9 &
+    #xcalib -o eDP1 ~/.bin/B140HAK01_0.icm &
+    sleep 5
+    #kill -9 `pidof redshift`
+    #redshift -x
+    pkill -SIGRTMIN+5 i3blocks &
+    
+else
+    #echo hindi
+    #redshift &
+    redshift -l $lat:$lon
+    # redshift -l $(curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"') &
+    sleep 5
+    pkill -SIGRTMIN+5 i3blocks &
+    
+fi
+
+
+exit 0
+
+
+
+

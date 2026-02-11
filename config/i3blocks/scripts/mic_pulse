@@ -1,0 +1,46 @@
+#!/bin/bash
+
+
+icon_color=${icon_color:-}
+
+if [[ "$instance" == mic ]]
+then
+	options=" --default-source"
+fi
+
+mixer="pamixer${options}"
+
+case $button in
+	1) $mixer -d ;;
+	2) $mixer -t;;
+	3) $mixer -i ;;
+	4) $mixer -i 5;;
+	5) $mixer -d 5;;
+esac
+
+volume="$($mixer --get-volume)"
+muted="$($mixer --get-mute)"
+
+if $muted
+then
+	label=
+	full="$label $volume%"
+	echo $full
+	echo
+	echo $icon_color
+    #echo \#70797C
+	#color="#F2777A"
+else
+	label=
+	full="$label $volume%"
+	echo $full
+	
+    
+
+	#color="#D9D9D9"
+	#color="#99CC99"
+fi
+
+
+
+#printf "%s <span foreground=\"%s\">%2d%%</span>\n" "$label" "$color" "$volume"

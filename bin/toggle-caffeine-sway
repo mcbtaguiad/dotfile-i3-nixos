@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
+
+#pidx=$(pgrep xautolock)
+#pidy=$(pgrep -f fullscreen-sound-monitor)
+#status=$(xset q | grep -c "Standby: 0")
+
+pid=$(pgrep swayidle)
+
+if [[ -n "$pid" ]]
+then
+    #notify-send "Caffeine" "O" -u normal
+ 
+    pkill swayidle &
+    sleep 1
+    pkill -SIGRTMIN+4 i3blocks  
+
+else
+    swayidle -w \
+	    timeout 600 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5   --effect-vignette 0.5:0.5 --ring-color ffffff --key-hl-color E60012 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' \
+	    timeout 900 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
+        timeout 1200 'systemctl suspend' \
+	    resume 'swaymsg "output * power on"' \
+        before-sleep 'playerctl pause' \
+        before-sleep 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5   --effect-vignette 0.5:0.5 --ring-color ffffff --key-hl-color E60012 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' &
+
+    sleep 1
+
+    pkill -SIGRTMIN+4 i3blocks  
+    
+fi
+
+exit 0
+
+

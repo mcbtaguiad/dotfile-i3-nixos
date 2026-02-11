@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+#lock() {
+#  betterlockscreen -l
+#}
+
+case "$1" in
+  mobile)
+    autorandr --skip-option crtc -c mobile 
+    # nitrogen --restore  
+    ;;
+  landscape-docked)
+    autorandr --skip-option crtc -c docked-l 
+    # nitrogen --restore  
+    ;;
+  portrait-docked)
+    autorandr --skip-option crtc -c docked-p 
+    # nitrogen --restore  
+    ;;
+  docked-secondary)
+    autorandr --skip-option crtc -c docked-secondary
+    # nitrogen --restore  
+    ;;
+  *)
+    echo "Usage: $0 {mobile|landscape-docked|portrait-docked|docked-secondary}"
+    exit 2
+esac
+                                                                                                                                                
+exit 0

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+while true; do
+
+# finds trackpoint (id=12) coords at two separate intervals
+xpos1=$(xinput query-state 19 | awk '{print $1}' | grep valuator | xargs | awk '{print $1}' | sed s/valuator[][-]// | sed s/0]=//)
+ypos1=$(xinput query-state 19 | awk '{print $1}' | grep valuator | xargs | awk '{print $2}' | sed s/valuator[][-]// | sed s/1]=//)
+sleep 0.1s
+xpos2=$(xinput query-state 19 | awk '{print $1}' | grep valuator | xargs | awk '{print $1}' | sed s/valuator[][-]// | sed s/0]=//)
+ypos2=$(xinput query-state 19 | awk '{print $1}' | grep valuator | xargs | awk '{print $2}' | sed s/valuator[][-]// | sed s/1]=//)
+
+# if trackpoint is not moving, enable trackpad (id=11)
+if [ $xpos1 -eq $xpos2 ]; then
+    if [ $ypos1 -eq $ypos2 ]; then
+        $(xinput enable 18)
+    fi
+else
+    $(xinput disable 18)
+fi
+
+done

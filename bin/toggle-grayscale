@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
+
+declare -i ID
+ID=$(pidof picom)
+declare -i STATE
+STATE=`ps -aux | grep picom | grep grayscale | wc -l`
+if [ $STATE -gt "0" ]
+then
+
+# pkill picom & 
+kill -INT $ID
+sleep 1
+picom --config ~/.config/picom/picom.conf &
+
+pkill -SIGRTMIN+14 i3blocks  &
+
+else
+
+# pkill picom & 
+kill -INT $ID
+sleep 1
+picom --config ~/.config/picom/picom.conf --backend=glx --window-shader-fg=$HOME/.config/picom/grayscale.glsl &
+
+pkill -SIGRTMIN+14 i3blocks  &
+    
+fi
+
+
+exit 0

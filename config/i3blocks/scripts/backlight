@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# Show the screen brightness value given by `xbacklight`.
+# Clicking uses `xset` to turn off the backlight, scrolling increases or decreases
+# the brightness.
+
+# Copyright 2019 Johannes Lange
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#R
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+case $BLOCK_BUTTON in
+  1) light -S 1 ;; # right click
+  2) xset dpms force off ;; # right click
+  3) light -S 100 ;; # right click
+  4) light -A 5 ;; # scroll up
+  5) light -U 5 ;; # scroll down, decrease
+esac
+
+
+light=$(light -G)
+light_rounded=$(echo ${light} | awk -F'[ "]' '{ printf "%.0f\n", $1*1 }')
+
+
+#BRIGHTNESS=$(xbacklight -get)
+#percent=$(echo "scale=0;${curBrightness}" | bc -l)
+#ROUND=$(round ${BRIGHTNESS} 1)
+#echo "scale=0;${BRIGHTNESS}" | bc -l
+#echo "${BRIGHTNESS}%"
+
+#icon=""
+
+#printf "%.0f%%\n" "$percent"
+
+
+
+if (( "$light_rounded" >= "0" && "$light_rounded" <= "33" )); then
+	#echo " ${light_rounded}%"
+  echo "BL ${light_rounded}%"
+elif (( "$light_rounded" > "33" && "$light_rounded" <= "64" )); then
+  #echo " ${light_rounded}%"
+  echo "BL ${light_rounded}%"
+elif (( "$light_rounded" > "64" )); then
+  #echo " ${light_rounded}%"
+  echo "BL ${light_rounded}%"
+fi
+
+
+
+
+
+
+
+#icon=""
+#icon=""
+
+#full="$icon ${light%.*}%"
+full="$icon ${light_rounded}"
+echo $full

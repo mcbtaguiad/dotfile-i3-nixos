@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
+case "$1" in
+  boot)
+    xset s 300 300  
+    xset dpms 300 310 320 
+    xset s on +dpms  
+
+
+    #pactl set-sink-volume @DEFAULT_SINK@ 50%
+    #i3-msg restart
+    xrandr --output eDP1 --auto --primary
+    #xrandr --auto
+    # xrandr --setprovideroutputsource NVIDIA-G0 modesetting
+    xrandr --dpi 96
+    #xrandr --output "eDP-1" --primary
+
+
+    autorandr -c
+    # autorandr --skip-option crtc -c docked-secondary
+    autorandr -c native
+    nitrogen --restore
+
+    sleep 0.5
+    nitrogen --restore
+    # ~/.bin/i3lock-custom
+    ;;
+  after-sleep)
+    xrandr --output eDP1 --auto --primary
+    #xrandr --auto
+    # xrandr --setprovideroutputsource NVIDIA-G0 modesetting
+    autorandr -c native
+    ;;
+  *)
+    echo "Usage: $0 {boot|after-sleep}"
+    exit 2
+esac
+
+exit 0
