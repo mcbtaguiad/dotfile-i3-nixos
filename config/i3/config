@@ -63,9 +63,9 @@ exec --no-startup-id ~/.local/bin/display_setting boot
 #exec --no-startup-id i3-msg restart
 exec --no-startup-id  picom --config ~/.config/picom/picom.conf -b 
 
-exec --no-startup-id pipewire
-exec --no-startup-id pipewire-pulse
-exec --no-startup-id wireplumber
+# exec --no-startup-id pipewire
+# exec --no-startup-id pipewire-pulse
+# exec --no-startup-id wireplumber
 
 bindsym $mod+Ctrl+x exec xkill 
 
