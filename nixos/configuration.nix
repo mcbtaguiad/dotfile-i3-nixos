@@ -66,6 +66,12 @@
       ];
     };
   };
+
+  services.logind.settings.Login = {
+    HandleLidSwitch = "lock";
+    HandleLidSwitchExternalPower = "lock";
+    HandleLidSwitchDocked = "ignore";
+  };
   
   # Enable Gnome
   services.displayManager.gdm.enable = true;
