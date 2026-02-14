@@ -9,20 +9,20 @@ case "$1" in
     lock
     ;;
   logout)
-    i3-msg exit
-    ;;
+      i3-msg exit
+      ;;
   suspend)
-    loginctl suspend
-    ;;
+      lock && systemctl suspend
+      ;;
   hibernate)
-    loginctl hibernate
-    ;;
+      lock && systemctl hibernate
+      ;;
   reboot)
-    loginctl reboot
-    ;;
+      systemctl reboot
+      ;;
   shutdown)
-    loginctl poweroff
-    ;;
+      systemctl poweroff
+      ;;
   *)
     echo "Usage: $0 {lock|logout|suspend|hibernate|reboot|shutdown}"
     exit 2
