@@ -87,10 +87,6 @@ bindsym $mod+Print --release exec --no-startup-id scrot -u ~/Pictures/Screenshot
 bindsym $mod+Shift+s --release exec --no-startup-id flameshot gui
 bindsym $mod+Ctrl+Print --release exec --no-startup-id flameshot gui
 
-
-
-
-
 #float-status
 
 # Open specific applications in floating mode
@@ -126,11 +122,6 @@ for_window [class="Blueman-manager"] floating enable
 for_window [class="Simplenote"] floating enable
 for_window [class="sddm-config-editor"] floating enable
 for_window [class="Arandr"] floating enable 
-
-
-
-
-
 
 # I 3  -  E X I T   B I N  #
 
@@ -172,15 +163,18 @@ mode "$mode_system1" {
     bindsym Escape mode "default"
 }
 
-
-
-
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -SIGRTMIN+2 i3blocks
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -SIGRTMIN+2 i3blocks
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+2 i3blocks
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && pkill -SIGRTMIN+11 i3blocks
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -SIGRTMIN+2 i3blocks
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -SIGRTMIN+2 i3blocks
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+2 i3blocks
+# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && pkill -SIGRTMIN+11 i3blocks
+
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ && pkill -SIGRTMIN+2 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05- && pkill -SIGRTMIN+2 i3blocks
+bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@  toggle && pkill -SIGRTMIN+2 i3blocks
+bindsym XF86AudioMicMute exec --no-startup-id wpctl set-mute @DEFAULT_SOURCE@ toggle&& pkill -SIGRTMIN+11 i3blocks
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec "light -A 5 ; pkill -RTMIN+1 i3blocks"
@@ -188,7 +182,12 @@ bindsym XF86MonBrightnessDown exec "light -U 5 ; pkill -RTMIN+1 i3blocks"
 #bindsym XF86MonBrightnessUp exec "xbacklight -inc 5 ; pkill -RTMIN+1 i3blocks"
 #bindsym XF86MonBrightnessDown exec "xbacklight -dec 5 ; pkill -RTMIN+1 i3blocks"
 
+
+#bindsym XF86MonBrightnessUp exec --no-startup-id lightup
+#bindsym XF86MonBrightnessDown exec --no-startup-id lightdown
+
 bindsym XF86Bluetooth exec --no-startup-id bluetooth-toggle && pkill -SIGRTMIN+6 i3blocks 
+#bindsym XF86Tools exec --no-startup-id code ~/.config/i3/config ~/.config/i3blocks/i3blocks.conf ~/.config/i3blocks/i3blocks-black.conf && nemo ~/.config
 #bindsym XF86Display exec --no-startup-id arandr
 
 # bindsym XF86Launch2  exec --no-startup-id toggle-kbbl && pkill -SIGRTMIN+12 i3blocks
@@ -217,8 +216,24 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
+
+
 bindsym $mod+d exec "dmenu_run -nf '#B3B3B3' -nb '#151515' -sb '#1B53B7' -sf '#FCFCFC' -fn 'SFNS Display Regular-11' -p 'dmenu prompt &gt;'"
 # bindsym $mod+d exec rofi -combi-modi window#drun#ssh -terminal "alacritty" -theme "~/.config/rofi/minimal/minimal.rasi" -font "SF Pro Rounded 12" -show combi -icon-theme "Papirus" -show-icons
+#bindsym $mod+d exec rofi -show run
+#bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"Open Sans Regular 11\\" -theme /home/mcbtaguiad/.config/rofi/style_2.rasi -theme-str 'element-icon { size: 4.0ch;}' -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+
+#bindsym $mod+d exec "dmenu_run -i -p 'What the fuck do you want?' -l 5 -nb '$bg_grey' -fn '$font' -nf '$fg' -sb '$blue' -sf '$fg'"
+# There also is the (new) i3-dmenu-desktop which only displays applications
+# shipping a .desktop file. It is a wrapper around dmenu, so you need that
+# installed.
+#bindsym $mod+d exec --no-startup-id dmenu-frecency-git
+#bindsym $mod+d exec --no-startup-id j4-dmenu-desktop 
+#bindsym $mod+d exec j4-dmenu-desktop --dmenu='dmenu_run  -nf '#B3B3B3' -nb '#151515' -sb '#3C4143' -sf '#D7D7D7' -fn "-SFNS Display Regular-r-*-*-14-*"'
+
+#bindsym $mod+d exec j4-dmenu-desktop --dmenu="dmenu -fn "-xos4-terminus-medium-r-*-*-12-*" -nb '#222222' -nf '#FFFFFF' -sb '#2ECC71' -sf '#333333' -i"
+
+
 
 # change focus
 bindsym $mod+j focus left
@@ -504,5 +519,3 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
 
+
+
 declare -i ID
 ID=$(pidof picom)
 declare -i STATE

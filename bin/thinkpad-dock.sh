@@ -8,7 +8,7 @@
 # wait for the dock state to change
 sleep 1
 
-username=$USER
+username=mtaguiad
 
 if [[ "$ACTION" == "add" ]]; then
   DOCKED=1
