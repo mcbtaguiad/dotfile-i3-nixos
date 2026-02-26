@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -51,7 +51,10 @@
     variant = "";
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services.xserver = {
     enable = true;
@@ -72,21 +75,21 @@
       extraPackages = with pkgs; [
         dmenu
         #i3status
-	      i3lock
-	      i3blocks
-	      i3lock-color
-	      xss-lock
+        i3lock
+        i3blocks
+        i3lock-color
+        xss-lock
       ];
     };
   };
-  
+
   # Configure lid switch to lock and suspend
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
     HandleLidSwitchExternalPower = "suspend";
     HandleLidSwitchDocked = "ignore";
   };
-  
+
   # Enable Gnome
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
@@ -108,7 +111,7 @@
   # Enable bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
-  
+
   services.libinput = {
     enable = true;
     touchpad.naturalScrolling = true;
@@ -119,31 +122,33 @@
   services.thermald.enable = true;
   # Enable tlp
   services.tlp = {
-      enable = true;
-      settings = {
-       #Optional helps save long term battery health
-       START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
-       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
+    enable = true;
+    settings = {
+      #Optional helps save long term battery health
+      START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+      STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
 
-      };
+    };
   };
-
-
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mcbtaguiad = {
     isNormalUser = true;
     description = "Mark Taguiad";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+    ];
     shell = pkgs.zsh;
     packages = with pkgs; [
-	    firefox
-	    vscode
-	    alacritty
-    	kubectl
-	    thunderbird
+      firefox
+      vscode
+      alacritty
+      kubectl
+      thunderbird
       docker
-	];
+    ];
   };
 
   fonts.packages = with pkgs; [
@@ -166,112 +171,115 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-	(python3.withPackages (ps: with ps; [
-    		psutil
-  	]))
-	(pkgs.vim-full.customize {
-		name = "vim";
+    (python3.withPackages (
+      ps: with ps; [
+        psutil
+      ]
+    ))
+    (pkgs.vim-full.customize {
+      name = "vim";
 
-		vimrcConfig = {
-			packages.myplugins = {
-			start = with pkgs.vimPlugins; [
-				vim-nix
-        vim-lastplace
+      vimrcConfig = {
+        packages.myplugins = {
+          start = with pkgs.vimPlugins; [
+            vim-nix
+            vim-lastplace
 
-			];
-			opt = [];
-			};
+          ];
+          opt = [ ];
+        };
 
-      customRC = ''
-      set backspace=indent,eol,start
-			set nocompatible
-			syntax enable
-			set modelines=0
-			set number relativenumber
-			set encoding=utf-8
-			set wrap
-			set tabstop=2
-			set shiftwidth=2
-			set softtabstop=2
-			set expandtab
-			set noshiftround
-			set hlsearch incsearch ignorecase
-			set incsearch
-			set showmatch
-			set smartcase
-			set hidden
-			set ttyfast
-			set laststatus=2
-			set showcmd
-        
-      set autoindent
-      set smartindent
-			filetype plugin indent on
+        customRC = ''
+                set backspace=indent,eol,start
+          			set nocompatible
+          			syntax enable
+          			set modelines=0
+          			set number relativenumber
+          			set encoding=utf-8
+          			set wrap
+          			set tabstop=2
+          			set shiftwidth=2
+          			set softtabstop=2
+          			set expandtab
+          			set noshiftround
+          			set hlsearch incsearch ignorecase
+          			set incsearch
+          			set showmatch
+          			set smartcase
+          			set hidden
+          			set ttyfast
+          			set laststatus=2
+          			set showcmd
+                  
+                set autoindent
+                set smartindent
+          			filetype plugin indent on
 
-			if $COLORTERM == 'truecolor'
-				set termguicolors
-			endif
+          			if $COLORTERM == 'truecolor'
+          				set termguicolors
+          			endif
 
-			let mapleader="\<space>"
-      nnoremap <leader>c :botright term<CR>
-      
-      '';
-		};
-	})
-        wget
-        curl
-        neofetch
-        htop
-        btop
-        git
-        feh
-        imagemagick
-        lxappearance
-        zip
-        unzip
-        jq
-        exfatprogs
-        picom
-        blueman
-        sysstat
-              bc
-        lm_sensors
-        alsa-utils
-        xidlehook
-        redshift
-        nitrogen
-        pavucontrol
-        flameshot
-        nemo
-        nemo-with-extensions
-        tmux
-        zsh
-        hugo
-        
-        # LSP Servers
-        lua-language-server
-        nil
-        nodePackages.typescript-language-server
-        gopls
-        pyright
-        bash-language-server
+          			let mapleader="\<space>"
+                nnoremap <leader>c :botright term<CR>
+                
+        '';
+      };
+    })
+    wget
+    curl
+    neofetch
+    htop
+    btop
+    git
+    feh
+    imagemagick
+    lxappearance
+    zip
+    unzip
+    jq
+    exfatprogs
+    picom
+    blueman
+    sysstat
+    bc
+    lm_sensors
+    alsa-utils
+    xidlehook
+    redshift
+    nitrogen
+    pavucontrol
+    flameshot
+    nemo
+    nemo-with-extensions
+    # tmux
+    zsh
+    hugo
+    ranger
 
-        # required runtimes
-        nodejs
-        go
-        python3
+    # LSP Servers
+    lua-language-server
+    nil
+    nodePackages.typescript-language-server
+    gopls
+    pyright
+    bash-language-server
 
-        # Linters
-        statix          # Nix
-        deadnix         # Nix unused code
-        eslint          # JS/TS
-        golangci-lint   # Go
-        pylint          # Python
-        shellcheck      # Bash
+    # required runtimes
+    nodejs
+    go
+    python3
 
-        # Nvim opt
-        lazygit
-        xclip
+    # Linters
+    statix # Nix
+    deadnix # Nix unused code
+    eslint # JS/TS
+    golangci-lint # Go
+    pylint # Python
+    shellcheck # Bash
+
+    # Nvim opt
+    lazygit
+    xclip
   ];
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
@@ -281,7 +289,7 @@
   environment.pathsToLink = [ "/libexec" ];
 
   programs.light.enable = true;
-  
+
   programs.zsh = {
     enable = true;
     ohMyZsh = {
@@ -293,10 +301,47 @@
       theme = "robbyrussell";
     };
   };
-  
+
   programs.tmux = {
     enable = true;
-    clock24 = true;
+
+    # Set your base tmux options
+    extraConfig = ''
+      # Start windows and panes index at 1
+      set -g base-index 1
+      setw -g pane-base-index 1
+
+      # Renumber windows on delete
+      set-option -g renumber-windows on
+
+      # Vim-style pane navigation
+      set -g @plugin 'christoomey/vim-tmux-navigator'
+
+      # Jump directly to window 1-9
+      bind-key -n M-1 select-window -t 1
+      bind-key -n M-2 select-window -t 2
+      bind-key -n M-3 select-window -t 3
+      bind-key -n M-4 select-window -t 4
+      bind-key -n M-5 select-window -t 5
+      bind-key -n M-6 select-window -t 6
+      bind-key -n M-7 select-window -t 7
+      bind-key -n M-8 select-window -t 8
+      bind-key -n M-9 select-window -t 9
+
+      # Theme plugins
+      set -g @plugin 'egel/tmux-gruvbox'
+      # set -g @tmux-gruvbox 'dark'  # Optional: dark/light variant
+
+      set -g @plugin 'catppuccin/tmux#v2.1.3'
+      set -g @catppuccin_flavor 'mocha'
+
+      # TPM plugin manager
+      set -g @plugin 'tmux-plugins/tpm'
+      set -g @plugin 'tmux-plugins/tmux-sensible'
+
+      # Initialize TMUX plugin manager
+      run '~/.tmux/plugins/tpm/tpm'
+    '';
   };
 
   programs.neovim = {
@@ -523,7 +568,7 @@
 
         -- [[ Enable inlay hints (Neovim 0.11+) ]]
         vim.lsp.inlay_hint.enable()
-        
+
         -- [[ LazyGit ]]
         vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { silent = true, desc = "Open LazyGit" })
 
@@ -754,13 +799,14 @@
 
           # Diagnostic
           tiny-inline-diagnostic-nvim
-          
+
+          # nvim-tmux
+          vim-tmux-navigator
 
         ];
       };
     };
   };
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -786,18 +832,21 @@
       setSocketVariable = true;
       # Optionally customize rootless Docker daemon settings
       daemon.settings = {
-        dns = [ "1.1.1.1" "8.8.8.8" ];
+        dns = [
+          "1.1.1.1"
+          "8.8.8.8"
+        ];
         registry-mirrors = [ "https://mirror.gcr.io" ];
       };
     };
-  }; 
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
