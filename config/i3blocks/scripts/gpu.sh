@@ -28,7 +28,9 @@ fi
 
 val=(`cat $SAVE2`)
 
-usage=$((`nvidia-smi -q -a | grep  "Gpu" | grep "[0-9]*" -o | sed -n 1p`))
+# usage=$((`nvidia-smi -q -a | grep  "Gpu" | grep "[0-9]*" -o | sed -n 1p`))
+
+usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)
 
 if [[ $usage -ge 75 ]]
 then
