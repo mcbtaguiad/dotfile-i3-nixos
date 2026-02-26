@@ -254,7 +254,8 @@
     # tmux
     zsh
     hugo
-    ranger
+    arandr
+    autorandr
 
     # LSP Servers
     lua-language-server
@@ -304,15 +305,23 @@
 
   programs.tmux = {
     enable = true;
+    baseIndex = 1;
+    newSession = true;
+    # Stop tmux+escape craziness.
+    escapeTime = 0;
+    # Force tmux to use /tmp for sockets (WSL2 compat)
+    secureSocket = false;
+    clock24 = true;
+    historyLimit = 50000;
+
+    plugins = with pkgs; [
+      tmuxPlugins.better-mouse-mode
+      tmuxPlugins.catppuccin
+
+    ];
 
     # Set your base tmux options
     extraConfig = ''
-      # Start windows and panes index at 1
-      set -g base-index 1
-      setw -g pane-base-index 1
-
-      # Renumber windows on delete
-      set-option -g renumber-windows on
 
       # Vim-style pane navigation
       set -g @plugin 'christoomey/vim-tmux-navigator'
@@ -329,9 +338,6 @@
       bind-key -n M-9 select-window -t 9
 
       # Theme plugins
-      set -g @plugin 'egel/tmux-gruvbox'
-      # set -g @tmux-gruvbox 'dark'  # Optional: dark/light variant
-
       set -g @plugin 'catppuccin/tmux#v2.1.3'
       set -g @catppuccin_flavor 'mocha'
 
@@ -339,8 +345,6 @@
       set -g @plugin 'tmux-plugins/tpm'
       set -g @plugin 'tmux-plugins/tmux-sensible'
 
-      # Initialize TMUX plugin manager
-      run '~/.tmux/plugins/tpm/tpm'
     '';
   };
 
