@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 SAVE2=/tmp/i3blocks_gpu_usage_4
 

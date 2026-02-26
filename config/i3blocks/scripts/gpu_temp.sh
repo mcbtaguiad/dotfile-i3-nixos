@@ -1,8 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 AVERAGE_TEMP=$(nvidia-smi -q -a | grep -i "GPU Current" | grep "[0-9]*" -o | sed -n 1p)
-
-
 
 if (( "${AVERAGE_TEMP}" < "25" )); then
     #echo " ${AVERAGE_TEMP}°C"
