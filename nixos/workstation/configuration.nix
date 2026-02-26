@@ -19,6 +19,7 @@
 
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
+    "mem_sleep_default=deep"
   ];
 
   networking.hostName = "tags-t470"; # Define your hostname.
@@ -134,7 +135,6 @@
 
     };
   };
-
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
@@ -145,17 +145,22 @@
 
   hardware.nvidia = {
     modesetting.enable = true;
-
-    powerManagement.enable = false;
-
+    powerManagement.enable = true;
     powerManagement.finegrained = false;
-
     open = false;
-
     nvidiaSettings = true;
+    prime = {
+      # offload = {
+      #   enable = true;
+      #   enableOffloadCmd = true;
+      # };
+      sync.enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_535;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -194,6 +199,7 @@
   ];
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -284,6 +290,7 @@
     ranger
     arandr
     autorandr
+    lshw
 
     # LSP Servers
     lua-language-server
