@@ -13,11 +13,18 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 5;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
 
-  networking.hostName = "tags-t470"; # Define your hostname.
+  # Boot Kernel Parameters
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "mem_sleep_default=deep"
+  ];
+
+  networking.hostName = "tags-p51"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -133,6 +140,79 @@
 
     };
   };
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+  };
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    prime = {
+      # offload = {
+      #   enable = true;
+      #   enableOffloadCmd = true;
+      # };
+      sync.enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  # llama-server service
+  # systemd.services.llama-server = {
+  #   description = "LLaMA Server (GPU)";
+  #   after = [
+  #     "network.target"
+  #     "nvidia-persistenced.service"
+  #   ];
+  #   wants = [ "nvidia-persistenced.service" ];
+  #
+  #   wantedBy = [ "multi-user.target" ];
+  #
+  #   path = with pkgs; [
+  #     llama-cpp
+  #     cudatoolkit
+  #     linuxPackages.nvidia_x11
+  #   ];
+  #
+  #   serviceConfig = {
+  #     Type = "simple";
+  #     Restart = "always";
+  #
+  #     # VERY IMPORTANT
+  #     PrivateDevices = false;
+  #
+  #     DeviceAllow = [
+  #       "/dev/nvidiactl rw"
+  #       "/dev/nvidia0 rw"
+  #       "/dev/nvidia-uvm rw"
+  #     ];
+  #
+  #     ExecStart = ''
+  #       ${pkgs.bash}/bin/bash -c "nvidia-smi; exec ${pkgs.llama-cpp}/bin/llama-server \
+  #         --model /srv/nvme/llm/models/qwen2.5-3b-instruct-q4_k_m.gguf \
+  #         -c 4096 \
+  #         -t 8 \
+  #         --port 8080 \
+  #         --n-gpu-layers 99"
+  #
+  #     '';
+  #   };
+  #
+  #   environment = {
+  #     LD_LIBRARY_PATH = "${pkgs.linuxPackages.nvidia_x11}/lib:${pkgs.cudatoolkit}/lib";
+  #   };
+  # };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mcbtaguiad = {
@@ -181,6 +261,13 @@
         psutil
       ]
     ))
+    (pkgs.ollama.override {
+      acceleration = "vulkan";
+    })
+    # (llama-cpp.override {
+    #   vulkanSupport = true;
+    # })
+
     (pkgs.vim-full.customize {
       name = "vim";
 
@@ -262,6 +349,14 @@
     autorandr
     lshw
 
+    # llm
+    llama-cpp
+    # ollama
+
+    # cuda
+    cudaPackages_12_8.cudatoolkit
+    vulkan-tools
+
     # LSP Servers
     lua-language-server
     nil
@@ -316,6 +411,15 @@
       theme = "robbyrussell";
     };
   };
+
+  # ollama
+  services.ollama = {
+    enable = true;
+    # package = pkgs.ollama-cuda; # gpu - too old to use llm
+    package = pkgs.ollama-vulkan;
+  };
+
+  services.open-webui.enable = true;
 
   # TMUX
   programs.tmux = {
