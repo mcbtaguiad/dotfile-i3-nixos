@@ -365,14 +365,17 @@
     plugins = with pkgs; [
       tmuxPlugins.better-mouse-mode
       tmuxPlugins.catppuccin
+      tmuxPlugins.vim-tmux-navigator
 
     ];
 
     # Set your base tmux options
     extraConfig = ''
-
-      # Vim-style pane navigation
-      set -g @plugin 'christoomey/vim-tmux-navigator'
+      # Vim-style pane navigation WITHOUT prefix
+      bind -n C-h select-pane -L
+      bind -n C-j select-pane -D
+      bind -n C-k select-pane -U
+      bind -n C-l select-pane -R
 
       # Jump directly to window 1-9
       bind-key -n M-1 select-window -t 1
@@ -388,11 +391,6 @@
       # Theme plugins
       set -g @plugin 'catppuccin/tmux#v2.1.3'
       set -g @catppuccin_flavor 'mocha'
-
-      # TPM plugin manager
-      set -g @plugin 'tmux-plugins/tpm'
-      set -g @plugin 'tmux-plugins/tmux-sensible'
-
     '';
   };
 
