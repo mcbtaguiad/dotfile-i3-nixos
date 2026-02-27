@@ -17,6 +17,7 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Boot Kernel Parameters
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "mem_sleep_default=deep"
@@ -36,19 +37,11 @@
   time.timeZone = "Asia/Manila";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_PH.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "fil_PH";
-    LC_IDENTIFICATION = "fil_PH";
-    LC_MEASUREMENT = "fil_PH";
-    LC_MONETARY = "fil_PH";
-    LC_NAME = "fil_PH";
-    LC_NUMERIC = "fil_PH";
-    LC_PAPER = "fil_PH";
-    LC_TELEPHONE = "fil_PH";
-    LC_TIME = "fil_PH";
-  };
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -61,6 +54,7 @@
     "flakes"
   ];
 
+  # Trackpoint
   services.xserver = {
     enable = true;
     #desktopManager = {xterm.enable=false;};
@@ -75,6 +69,7 @@
         Option "MiddleEmulation" "false"
       ''
     ];
+    # i3wm
     windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [
@@ -86,6 +81,15 @@
         xss-lock
       ];
     };
+  };
+
+  # Theme
+  programs.dconf.enable = true;
+
+  environment.variables = {
+    GTK_THEME = "Graphite-Dark";
+    XCURSOR_THEME = "McMojave-cursors";
+    XCURSOR_SIZE = "24";
   };
 
   # Configure lid switch to lock and suspend
@@ -197,6 +201,7 @@
     nerd-fonts.noto
     nerd-fonts.space-mono
   ];
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.nvidia.acceptLicense = true;
@@ -223,38 +228,36 @@
         };
 
         customRC = ''
-                set backspace=indent,eol,start
-          			set nocompatible
-          			syntax enable
-          			set modelines=0
-          			set number relativenumber
-          			set encoding=utf-8
-          			set wrap
-          			set tabstop=2
-          			set shiftwidth=2
-          			set softtabstop=2
-          			set expandtab
-          			set noshiftround
-          			set hlsearch incsearch ignorecase
-          			set incsearch
-          			set showmatch
-          			set smartcase
-          			set hidden
-          			set ttyfast
-          			set laststatus=2
-          			set showcmd
-                  
-                set autoindent
-                set smartindent
-          			filetype plugin indent on
+          set backspace=indent,eol,start
+          set nocompatible
+          syntax enable
+          set modelines=0
+          set number relativenumber
+          set encoding=utf-8
+          set wrap
+          set tabstop=2
+          set shiftwidth=2
+          set softtabstop=2
+          set expandtab
+          set noshiftround
+          set hlsearch incsearch ignorecase
+          set incsearch
+          set showmatch
+          set smartcase
+          set hidden
+          set ttyfast
+          set laststatus=2
+          set showcmd
+          set autoindent
+          set smartindent
+          filetype plugin indent on
 
-          			if $COLORTERM == 'truecolor'
-          				set termguicolors
-          			endif
+          if $COLORTERM == 'truecolor'
+            set termguicolors
+          endif
 
-          			let mapleader="\<space>"
-                nnoremap <leader>c :botright term<CR>
-                
+          let mapleader="\<space>"
+          nnoremap <leader>c :botright term<CR>
         '';
       };
     })
@@ -316,16 +319,25 @@
     # Nvim opt
     lazygit
     xclip
+
+    # theme
+    graphite-gtk-theme
+    adwaita-icon-theme
+    apple-cursor
   ];
 
+  # Mounts
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 
+  # Enable Custom $Path
   environment.localBinInPath = true;
   environment.pathsToLink = [ "/libexec" ];
 
+  # Backlight
   programs.light.enable = true;
 
+  # ZSH
   programs.zsh = {
     enable = true;
     ohMyZsh = {
@@ -338,6 +350,7 @@
     };
   };
 
+  # TMUX
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -383,6 +396,7 @@
     '';
   };
 
+  # Neovim
   programs.neovim = {
     enable = true;
 
@@ -451,6 +465,18 @@
         vim.keymap.set("n", "<C-Down>",  "<cmd>resize -2<CR>",          { desc = "Decrease window height" })
         vim.keymap.set("n", "<C-Left>",  "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
         vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
+
+        -- [[ Nix indentation (2 spaces, no tabs) ]]
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "nix",
+          callback = function()
+            vim.opt_local.tabstop = 2
+            vim.opt_local.shiftwidth = 2
+            vim.opt_local.softtabstop = 2
+            vim.opt_local.expandtab = true
+          end,
+        })
+
 
         -- [[ Theme ]]
         -- [[ Catppuccin Theme ]]
