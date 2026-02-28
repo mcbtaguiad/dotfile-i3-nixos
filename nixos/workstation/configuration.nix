@@ -4,6 +4,15 @@
 
 { config, pkgs, ... }:
 
+let
+  # Override llama-cpp to enable Vulkan GPU support
+  llamaCppVulkan = pkgs.llama-cpp.override {
+    vulkanSupport = true;
+    cudaSupport = false;
+    rocmSupport = false;
+  };
+in
+
 {
   imports = [
     # Include the results of the hardware scan.
@@ -168,52 +177,6 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  # llama-server service
-  # systemd.services.llama-server = {
-  #   description = "LLaMA Server (GPU)";
-  #   after = [
-  #     "network.target"
-  #     "nvidia-persistenced.service"
-  #   ];
-  #   wants = [ "nvidia-persistenced.service" ];
-  #
-  #   wantedBy = [ "multi-user.target" ];
-  #
-  #   path = with pkgs; [
-  #     llama-cpp
-  #     cudatoolkit
-  #     linuxPackages.nvidia_x11
-  #   ];
-  #
-  #   serviceConfig = {
-  #     Type = "simple";
-  #     Restart = "always";
-  #
-  #     # VERY IMPORTANT
-  #     PrivateDevices = false;
-  #
-  #     DeviceAllow = [
-  #       "/dev/nvidiactl rw"
-  #       "/dev/nvidia0 rw"
-  #       "/dev/nvidia-uvm rw"
-  #     ];
-  #
-  #     ExecStart = ''
-  #       ${pkgs.bash}/bin/bash -c "nvidia-smi; exec ${pkgs.llama-cpp}/bin/llama-server \
-  #         --model /srv/nvme/llm/models/qwen2.5-3b-instruct-q4_k_m.gguf \
-  #         -c 4096 \
-  #         -t 8 \
-  #         --port 8080 \
-  #         --n-gpu-layers 99"
-  #
-  #     '';
-  #   };
-  #
-  #   environment = {
-  #     LD_LIBRARY_PATH = "${pkgs.linuxPackages.nvidia_x11}/lib:${pkgs.cudatoolkit}/lib";
-  #   };
-  # };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mcbtaguiad = {
     isNormalUser = true;
@@ -261,60 +224,17 @@
         psutil
       ]
     ))
-    (pkgs.ollama.override {
-      acceleration = "vulkan";
-    })
-    # (llama-cpp.override {
-    #   vulkanSupport = true;
+    # (pkgs.ollama.override {
+    #   acceleration = "vulkan";
     # })
-
-    (pkgs.vim-full.customize {
-      name = "vim";
-
-      vimrcConfig = {
-        packages.myplugins = {
-          start = with pkgs.vimPlugins; [
-            vim-nix
-            vim-lastplace
-
-          ];
-          opt = [ ];
-        };
-
-        customRC = ''
-          set backspace=indent,eol,start
-          set nocompatible
-          syntax enable
-          set modelines=0
-          set number relativenumber
-          set encoding=utf-8
-          set wrap
-          set tabstop=2
-          set shiftwidth=2
-          set softtabstop=2
-          set expandtab
-          set noshiftround
-          set hlsearch incsearch ignorecase
-          set incsearch
-          set showmatch
-          set smartcase
-          set hidden
-          set ttyfast
-          set laststatus=2
-          set showcmd
-          set autoindent
-          set smartindent
-          filetype plugin indent on
-
-          if $COLORTERM == 'truecolor'
-            set termguicolors
-          endif
-
-          let mapleader="\<space>"
-          nnoremap <leader>c :botright term<CR>
-        '';
-      };
+    (llama-cpp.override {
+      vulkanSupport = true;
     })
+    # unstable.llama-cpp.override
+    # {
+    #   vulkanSupport = true;
+    # }
+
     wget
     curl
     neofetch
@@ -348,10 +268,12 @@
     arandr
     autorandr
     lshw
+    mesa
+    kitty
 
     # llm
     llama-cpp
-    # ollama
+    # # ollama
 
     # cuda
     cudaPackages_12_8.cudatoolkit
@@ -413,13 +335,36 @@
   };
 
   # ollama
-  services.ollama = {
-    enable = true;
-    # package = pkgs.ollama-cuda; # gpu - too old to use llm
-    package = pkgs.ollama-vulkan;
-  };
+  # services.ollama = {
+  #   enable = true;
+  #   # package = pkgs.ollama-cuda; # gpu - too old to use llm
+  #   package = pkgs.ollama-vulkan;
+  # };
 
-  services.open-webui.enable = true;
+  # services.open-webui.enable = true;
+
+  # llama-ccp server service
+  services.llama-cpp = {
+    enable = true;
+    # package = llama-cpp-vulkan;
+    model = "/srv/nvme/llm/models/ggml-org_Qwen2.5-Coder-1.5B-Q8_0-GGUF_qwen2.5-coder-1.5b-q8_0.gguf";
+    host = "0.0.0.0";
+    port = 8080;
+    package = llamaCppVulkan;
+    extraFlags = [
+      "-c"
+      "4096"
+      "-ngl"
+      "999"
+      "--threads"
+      "6"
+      "--parallel"
+      "1"
+      "--mlock"
+      "--batch-size"
+      "512"
+    ];
+  };
 
   # TMUX
   programs.tmux = {
@@ -530,10 +475,10 @@
 
         -- [[ Split Keymaps ]]
 
-        vim.keymap.set("n", "<C-Up>",    "<cmd>resize +2<CR>",          { desc = "Increase window height" })
-        vim.keymap.set("n", "<C-Down>",  "<cmd>resize -2<CR>",          { desc = "Decrease window height" })
-        vim.keymap.set("n", "<C-Left>",  "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
-        vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
+        -- vim.keymap.set("n", "<C-Up>",    "<cmd>resize +2<CR>",          { desc = "Increase window height" })
+        -- vim.keymap.set("n", "<C-Down>",  "<cmd>resize -2<CR>",          { desc = "Decrease window height" })
+        -- vim.keymap.set("n", "<C-Left>",  "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
+        -- vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
 
         -- [[ Nix indentation (2 spaces, no tabs) ]]
         vim.api.nvim_create_autocmd("FileType", {
@@ -546,6 +491,43 @@
           end,
         })
 
+        vim.api.nvim_create_autocmd("TextYankPost", {
+          group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
+          callback = function()
+            vim.highlight.on_yank({
+              higroup = "IncSearch", -- The highlight group to use (IncSearch is default)
+              timeout = 300,         -- Duration in milliseconds
+            })
+          end,
+        })
+
+        -- [[ GitSigns ]]
+        local ok, gitsigns = pcall(require, "gitsigns")
+        if ok then
+          gitsigns.setup {
+            signs = {
+              add          = {text = '+'},
+              change       = {text = '~'},
+              delete       = {text = '_'},
+              topdelete    = {text = '‾'},
+              changedelete = {text = '~'},
+            },
+            numhl = false,
+            linehl = false,
+            current_line_blame = true,
+            watch_gitdir = { interval = 1000, follow_files = true },
+            sign_priority = 6,
+            update_debounce = 100,
+          }
+        end
+
+        -- [[ llama.vim ]]
+        vim.g.llama_config = {
+          endpoint = "http://127.0.0.1:8080/infill",
+
+          keymap_fim_accept_full = "<C-Right>",
+
+        }
 
         -- [[ Theme ]]
         -- [[ Catppuccin Theme ]]
@@ -925,6 +907,7 @@
           lualine-nvim
           bufferline-nvim
           sqlite-lua
+          gitsigns-nvim
 
           # Greeter & Session Manager
           alpha-nvim
@@ -936,6 +919,9 @@
 
           # nvim-tmux
           vim-tmux-navigator
+
+          # llm
+          llama-vim
 
         ];
       };
