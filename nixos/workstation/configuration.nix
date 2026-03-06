@@ -29,9 +29,16 @@ in
 
   # Boot Kernel Parameters
   boot.kernelParams = [
+    "kvm-intel"
     "nvidia-drm.modeset=1"
     "mem_sleep_default=deep"
   ];
+
+  boot.kernelModules = [ "thinkpad_acpi" ];
+
+  boot.extraModprobeConfig = ''
+    options thinkpad_acpi fan_control=1
+  '';
 
   networking.hostName = "tags-p51"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -42,6 +49,26 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Bridge network
+  networking.useDHCP = false;
+  networking.bridges = {
+    "br0" = {
+      interfaces = [ "enp0s31f6" ];
+    };
+  };
+  networking.interfaces.br0.ipv4.addresses = [
+    {
+      address = "192.168.254.69";
+      prefixLength = 24;
+    }
+  ];
+  networking.defaultGateway = "192.168.254.254";
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
+  networking.firewall.checkReversePath = "loose";
 
   # Set your time zone.
   time.timeZone = "Asia/Manila";
@@ -144,7 +171,7 @@ in
     enable = true;
     settings = {
       #Optional helps save long term battery health
-      START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+      START_CHARGE_THRESH_BAT0 = 65; # 65 and below it starts to charge
       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
 
     };
@@ -177,6 +204,70 @@ in
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # thinkfan
+  services.thinkfan = {
+    enable = true;
+    sensors = [
+      {
+        type = "hwmon";
+        query = "/sys/devices/platform/coretemp.0/hwmon/hwmon7/temp1_input";
+      }
+    ];
+    fans = [
+      {
+        type = "tpacpi";
+        query = "/proc/acpi/ibm/fan";
+      }
+    ];
+    levels = [
+      [
+        0
+        0
+        45
+      ]
+      [
+        1
+        43
+        50
+      ]
+      [
+        2
+        48
+        55
+      ]
+      [
+        3
+        53
+        60
+      ]
+      [
+        4
+        58
+        65
+      ]
+      [
+        5
+        63
+        70
+      ]
+      [
+        6
+        68
+        75
+      ]
+      [
+        7
+        72
+        80
+      ]
+      [
+        127
+        78
+        32767
+      ]
+    ];
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mcbtaguiad = {
     isNormalUser = true;
@@ -185,6 +276,8 @@ in
       "networkmanager"
       "wheel"
       "video"
+      "libvirtd"
+      "qemu-libvirtd"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [
@@ -270,6 +363,22 @@ in
     lshw
     mesa
     kitty
+    gimp
+    simplescreenrecorder
+    tree
+    obsidian
+
+    #thinkpad
+    thinkfan
+
+    # clouflare
+    cloudflared
+
+    # virt
+    virt-manager
+    libguestfs
+    dnsmasq
+    cloud-utils
 
     # llm
     llama-cpp
@@ -353,16 +462,18 @@ in
     package = llamaCppVulkan;
     extraFlags = [
       "-c"
-      "4096"
+      "2048"
       "-ngl"
-      "999"
+      "24"
       "--threads"
-      "6"
+      "8"
       "--parallel"
       "1"
-      "--mlock"
       "--batch-size"
-      "512"
+      "128"
+      "--ubatch-size"
+      "128"
+      "--no-mmap"
     ];
   };
 
@@ -960,6 +1071,32 @@ in
       };
     };
   };
+
+  # Virt libvirt
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      vhostUserPackages = with pkgs; [ virtiofsd ];
+      runAsRoot = true;
+      swtpm.enable = true;
+    };
+    allowedBridges = [ "br0" ];
+  };
+
+  # services.cockpit = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   port = 9090;
+  #   settings = {
+  #     WebService = {
+  #       AllowUnencrypted = true;
+  #     };
+  #     Webservice = {
+  #       Origins = "http://localhost:9090 https://localhost:9090";
+  #     };
+  #   };
+  # };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
