@@ -25,7 +25,7 @@ in
   boot.loader.timeout = 5;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   # Boot Kernel Parameters
   boot.kernelParams = [
@@ -173,6 +173,8 @@ in
       #Optional helps save long term battery health
       START_CHARGE_THRESH_BAT0 = 65; # 65 and below it starts to charge
       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
     };
   };
@@ -191,11 +193,11 @@ in
     open = false;
     nvidiaSettings = true;
     prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-      # sync.enable = true;
+      # offload = {
+      #   enable = true;
+      #   enableOffloadCmd = true;
+      # };
+      sync.enable = true;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
@@ -311,6 +313,16 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "ciscoPacketTracer8-8.2.2"
+    "steam"
+    "steam-original"
+    "steam-unwrapped"
+    "steam-run"
+
+  ];
+
   environment.systemPackages = with pkgs; [
     (python3.withPackages (
       ps: with ps; [
@@ -367,6 +379,18 @@ in
     simplescreenrecorder
     tree
     obsidian
+    ripgrep
+    net-tools
+    loupe
+    gns3-gui
+    ciscoPacketTracer8
+    inetutils
+    dig
+    openssl_3
+    swaks
+    teams-for-linux
+    # linuxKernel.packages.linux_6_6.cpupower
+    # undervolt
 
     #thinkpad
     thinkfan
@@ -430,6 +454,14 @@ in
   # Backlight
   programs.light.enable = true;
 
+  # Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
+
   # ZSH
   programs.zsh = {
     enable = true;
@@ -442,6 +474,29 @@ in
       theme = "robbyrussell";
     };
   };
+
+  # undervolt
+  # services.undervolt = {
+  #   enable = true;
+  #
+  #   # CPU core voltage offset (mV)
+  #   coreOffset = -100;
+  #
+  #   # cache/uncore voltage offset
+  #   uncoreOffset = -100;
+  #
+  #   # optional temperature target
+  #   temp = 90;
+  #
+  #   # optional: disable turbo
+  #   # turbo = 1;
+  #
+  #   # verbose logging
+  #   verbose = true;
+  #
+  #   # if settings reset after suspend/boot
+  #   # useTimer = true;
+  # };
 
   # ollama
   # services.ollama = {
@@ -639,6 +694,19 @@ in
           keymap_fim_accept_full = "<C-Right>",
 
         }
+
+        -- [[ mini.surround ]]
+        require("mini.surround").setup({
+          mappings = {
+            add = "sa",
+            delete = "sd",
+            replace = "sr",
+            find = "sf",
+            find_left = "sF",
+            highlight = "sh",
+            update_n_lines = "sn",
+          },
+        })
 
         -- [[ Theme ]]
         -- [[ Catppuccin Theme ]]
@@ -1008,6 +1076,7 @@ in
           cmp_luasnip
           friendly-snippets
           nvim-autopairs
+          mini-surround
 
           # Lint
           nvim-lint
