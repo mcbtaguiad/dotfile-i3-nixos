@@ -5,6 +5,9 @@
     # hardware
     ../modules/hardware/nvidia.nix
 
+    # storage
+    ../modules/storage/zfs.nix
+
   ];
 
   boot = {

@@ -51,9 +51,6 @@
         # network
         ./modules/network/base.nix
 
-        # storage
-        ./modules/storage/zfs.nix
-
         # desktop
         ./modules/desktop/editor.nix
         ./modules/desktop/terminal.nix
