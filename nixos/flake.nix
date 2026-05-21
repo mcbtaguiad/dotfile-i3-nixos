@@ -90,18 +90,18 @@
             # }
 
             # optional server-only tuning
-            {
-              boot = {
-                kernelParams = [ "nvidia-drm.modeset=1" ];
-
-                supportedFilesystems = [ "zfs" ];
-
-                initrd.kernelModules = [ "zfs" ];
-                initrd.supportedFilesystems = [ "zfs" ];
-
-                zfs.extraPools = [ "rpool" ];
-              };
-            }
+            # {
+            #   boot = {
+            #     kernelParams = [ "nvidia-drm.modeset=1" ];
+            #
+            #     supportedFilesystems = [ "zfs" ];
+            #
+            #     initrd.kernelModules = [ "zfs" ];
+            #     initrd.supportedFilesystems = [ "zfs" ];
+            #
+            #     zfs.extraPools = [ "tank" ];
+            #   };
+            # }
           ];
         };
       };

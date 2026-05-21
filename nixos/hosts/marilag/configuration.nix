@@ -6,6 +6,7 @@
   imports = [
     ../../profiles/server.nix
     ../../users/server.nix
+    ../../pkgs/server.nix
   ];
 
   programs.nh = {

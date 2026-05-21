@@ -28,26 +28,4 @@
       ];
     };
   };
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  programs.light.enable = true;
-
-  programs.dconf.enable = true;
-
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-color-emoji
-    liberation_ttf
-    ibm-plex
-
-    # nerd fonts
-    nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.droid-sans-mono
-    nerd-fonts.noto
-    nerd-fonts.space-mono
-  ];
 }

@@ -1,13 +1,41 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   imports = [
-    ../modules/nvidia.nix
-    ../modules/terminal.nix
-    ../modules/editor.nix
-    # ../modules/storage.nix
+    # hardware
+    ../modules/hardware/kernel_boot.nix
+    ../modules/hardware/nvidia.nix
+    ../modules/hardware/power.nix
+    ../modules/hardware/thinkpad.nix
+
+    # system
+    ../modules/system/font.nix
+    ../modules/system/locale.nix
+    ../modules/system/ssh.nix
+
+    # network
+    ../modules/network/base.nix
+
+    # storage
+    ../modules/storage/zfs.nix
+
+    # desktop
+    ../modules/desktop/editor.nix
+    ../modules/desktop/terminal.nix
 
   ];
+
+  boot = {
+    kernelParams = [ "nvidia-drm.modeset=1" ];
+
+    supportedFilesystems = [ "zfs" ];
+
+    initrd.kernelModules = [ "zfs" ];
+    initrd.supportedFilesystems = [ "zfs" ];
+
+    zfs.extraPools = [ "tank" ];
+  };
+
   networking = {
     hostName = "marilag";
     hostId = "309ea633";
@@ -35,26 +63,5 @@
     firewall.checkReversePath = "loose";
 
   };
-
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    btop
-    htop
-    git
-    zip
-    unzip
-    tree
-    hugo
-    zfs
-
-    virt-manager
-    libguestfs
-    dnsmasq
-    cloud-utils
-
-    cudaPackages_12_8.cudatoolkit
-    vulkan-tools
-  ];
 
 }
