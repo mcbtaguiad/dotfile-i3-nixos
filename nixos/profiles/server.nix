@@ -5,11 +5,12 @@
     ../modules/nvidia.nix
     ../modules/terminal.nix
     ../modules/editor.nix
-    ../modules/storage.nix
+    # ../modules/storage.nix
 
   ];
   networking = {
     hostName = "marilag";
+    hostId = "309ea633";
 
     networkmanager.enable = true;
 
