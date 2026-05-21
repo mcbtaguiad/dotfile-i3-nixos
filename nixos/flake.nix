@@ -7,12 +7,19 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
+      self,
       nixpkgs,
       nixpkgs-unstable,
+      agenix,
       ...
     }:
     let
@@ -68,12 +75,17 @@
 
           specialArgs = {
             pkgs-unstable = unstableFor system;
+            inherit agenix;
           };
 
           modules = commonModules ++ [
+            agenix.nixosModules.default
             ./hosts/sinagtala/configuration.nix
             ./hosts/sinagtala/hardware-configuration.nix
 
+            {
+              environment.systemPackages = [ agenix.packages.${system}.default ];
+            }
           ];
         };
 
@@ -88,30 +100,13 @@
           };
 
           modules = commonModules ++ [
+            agenix.nixosModules.default
             ./hosts/marilag/configuration.nix
             ./hosts/marilag/hardware-configuration.nix
 
-            # server feature flags
-            # {
-            #   myProfile = {
-            #     nvidia.enable = true;
-            #     virtualization.enable = false;
-            #   };
-            # }
-
-            # optional server-only tuning
-            # {
-            #   boot = {
-            #     kernelParams = [ "nvidia-drm.modeset=1" ];
-            #
-            #     supportedFilesystems = [ "zfs" ];
-            #
-            #     initrd.kernelModules = [ "zfs" ];
-            #     initrd.supportedFilesystems = [ "zfs" ];
-            #
-            #     zfs.extraPools = [ "tank" ];
-            #   };
-            # }
+            {
+              environment.systemPackages = [ agenix.packages.${system}.default ];
+            }
           ];
         };
       };
