@@ -38,12 +38,25 @@
         };
 
       commonModules = [
-        ./modules/core.nix
-        ./modules/hardware.nix
-        ./modules/network.nix
-        ./modules/power.nix
-        ./modules/system.nix
-        ./modules/thinkpad.nix
+        # hardware
+        ./modules/hardware/kernel_boot.nix
+        ./modules/hardware/power.nix
+        ./modules/hardware/thinkpad.nix
+
+        # system
+        ./modules/system/font.nix
+        ./modules/system/locale.nix
+        ./modules/system/ssh.nix
+
+        # network
+        ./modules/network/base.nix
+
+        # storage
+        ./modules/storage/zfs.nix
+
+        # desktop
+        ./modules/desktop/editor.nix
+        ./modules/desktop/terminal.nix
       ];
 
     in

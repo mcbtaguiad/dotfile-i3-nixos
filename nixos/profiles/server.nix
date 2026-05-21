@@ -3,25 +3,7 @@
 {
   imports = [
     # hardware
-    ../modules/hardware/kernel_boot.nix
     ../modules/hardware/nvidia.nix
-    ../modules/hardware/power.nix
-    ../modules/hardware/thinkpad.nix
-
-    # system
-    ../modules/system/font.nix
-    ../modules/system/locale.nix
-    ../modules/system/ssh.nix
-
-    # network
-    ../modules/network/base.nix
-
-    # storage
-    ../modules/storage/zfs.nix
-
-    # desktop
-    ../modules/desktop/editor.nix
-    ../modules/desktop/terminal.nix
 
   ];
 

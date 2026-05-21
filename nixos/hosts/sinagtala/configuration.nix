@@ -6,6 +6,7 @@
   imports = [
     ../../profiles/workstation.nix
     ../../users/workstation.nix
+    ../../pkgs/workstation.nix
   ];
 
   programs.nh = {
