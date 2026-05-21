@@ -5,6 +5,8 @@
     ../modules/nvidia.nix
     ../modules/terminal.nix
     ../modules/editor.nix
+    ../modules/storage.nix
+
   ];
   networking = {
     hostName = "marilag";
@@ -43,6 +45,7 @@
     unzip
     tree
     hugo
+    zfs
 
     virt-manager
     libguestfs

@@ -92,6 +92,8 @@
             # optional server-only tuning
             {
               boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+              boot.supportedFilesystems = [ "zfs" ];
+              boot.zfs.extraPools = [ "rpool" ];
             }
           ];
         };
