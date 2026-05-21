@@ -18,7 +18,6 @@
     "xhci_pci"
     "ahci"
     "nvme"
-    "usbhid"
     "usb_storage"
     "sd_mod"
     "rtsx_pci_sdmmc"
@@ -28,32 +27,20 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/529d136d-3bd4-4e7e-924b-0536a179a5e5";
+    device = "/dev/disk/by-uuid/62797156-4e77-4c24-b4ad-fa831bb87f05";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/D9BC-CFDC";
+    device = "/dev/disk/by-uuid/B66D-D8AC";
     fsType = "vfat";
     options = [
-      "fmask=0077"
-      "dmask=0077"
+      "fmask=0022"
+      "dmask=0022"
     ];
   };
 
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/72c8b59b-f11a-4d8a-94a3-35c542df46b8"; }
-  ];
-
-  fileSystems."/srv/ssd" = {
-    device = "/dev/disk/by-uuid/289429cd-429f-43b2-b6c6-f5455c6dda6c";
-    fsType = "ext4";
-  };
-
-  fileSystems."/srv/nvme" = {
-    device = "/dev/disk/by-uuid/1e4e1a70-d9c7-46be-ac27-53a06b90aa6e";
-    fsType = "ext4";
-  };
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
