@@ -8,6 +8,10 @@
     # storage
     ../modules/storage/zfs.nix
 
+    # tunnel
+    ../services/systemd/cloudflared.nix
+    ../services/systemd/wireguard.nix
+
   ];
 
   boot = {
