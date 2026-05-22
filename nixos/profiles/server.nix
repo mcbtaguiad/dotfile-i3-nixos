@@ -8,9 +8,15 @@
     # storage
     ../modules/storage/zfs.nix
 
+    # virtualization
+    ../modules/virtualization/docker.nix
+
     # tunnel
     ../services/systemd/cloudflared.nix
     ../services/systemd/wireguard.nix
+
+    # containers
+    ../services/container/nginx.nix
 
   ];
 
