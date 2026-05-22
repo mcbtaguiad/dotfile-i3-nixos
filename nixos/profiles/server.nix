@@ -23,6 +23,11 @@
     initrd.supportedFilesystems = [ "zfs" ];
 
     zfs.extraPools = [ "tank" ];
+
+    kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+    };
+
   };
 
   networking = {
