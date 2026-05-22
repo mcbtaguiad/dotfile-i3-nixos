@@ -10,11 +10,6 @@ in
     workstation
   ];
 
-  "wireguard-pubkey-marilag.age".publicKeys = [
-    marilag
-    workstation
-  ];
-
   "wireguard-privkey-marilag.age".publicKeys = [
     marilag
     workstation
