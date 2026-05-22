@@ -1,11 +1,6 @@
 { config, ... }:
 
 {
-  age.secrets.wireguard-pubkey-marilag = {
-    file = ../../secrets/wireguard-pubkey-marilag.age;
-    mode = "0400";
-  };
-
   age.secrets.wireguard-privkey-marilag = {
     file = ../../secrets/wireguard-privkey-marilag.age;
     mode = "0400";
@@ -18,18 +13,18 @@
   networking.wireguard.interfaces = {
     wg0 = {
 
-      ips = [ "10.100.0.2/24" ];
+      ips = [ "10.0.0.2/24" ];
       listenPort = 51820;
 
-      privateKeyFile = "${config.age.secrets.wireguard-privkey-marilag.path}";
+      privateKeyFile = config.age.secrets.wireguard-privkey-marilag.path;
 
       peers = [
         {
-          publicKey = "${config.age.secrets.wireguard-pubkey-marilag.path}";
+          publicKey = "6F7h5/LsxwYLXe32ffBA+97ujVDlPJ7/uFkAT/OMChM=";
 
-          allowedIPs = [ "0.0.0.0/0" ];
+          allowedIPs = [ "10.0.0.0/24" ];
 
-          endpoint = "{server ip}:51820";
+          endpoint = "192.3.159.182:51820";
           persistentKeepalive = 25;
         }
       ];
