@@ -3,10 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     flake-utils.url = "github:numtide/flake-utils";
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     agenix = {
       url = "github:ryantm/agenix";
@@ -20,6 +19,7 @@
       nixpkgs,
       nixpkgs-unstable,
       agenix,
+      quadlet-nix,
       ...
     }:
     let
@@ -79,6 +79,7 @@
           };
 
           modules = commonModules ++ [
+            quadlet-nix.nixosModules.quadlet
             agenix.nixosModules.default
             ./hosts/sinagtala/configuration.nix
             ./hosts/sinagtala/hardware-configuration.nix
@@ -100,6 +101,7 @@
           };
 
           modules = commonModules ++ [
+            quadlet-nix.nixosModules.quadlet
             agenix.nixosModules.default
             ./hosts/marilag/configuration.nix
             ./hosts/marilag/hardware-configuration.nix
