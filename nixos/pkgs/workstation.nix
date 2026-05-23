@@ -61,6 +61,7 @@
     mpc
     playerctl
     wireguard-tools
+    virt-manager
 
     chromium
     spotify

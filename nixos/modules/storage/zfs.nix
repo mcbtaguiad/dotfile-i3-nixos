@@ -1,6 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  environment.systemPackages = with pkgs; [
+    zfs
+  ];
+
   services = {
     zfs.autoSnapshot.enable = true;
     zfs.trim.enable = true;

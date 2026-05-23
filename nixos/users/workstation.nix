@@ -9,6 +9,7 @@
       "networkmanager"
       "wheel"
       "video"
+      "adbusers"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [

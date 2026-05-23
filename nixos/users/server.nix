@@ -9,6 +9,8 @@
       "networkmanager"
       "wheel"
       "video"
+      "libvirtd"
+      "kvm"
     ];
     shell = pkgs.zsh;
   };
