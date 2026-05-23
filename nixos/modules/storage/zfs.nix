@@ -10,7 +10,7 @@
 
   };
 
-  fileSystems."/var/lib/docker" = {
+  fileSystems."/var/lib/containers/storage" = {
     device = "tank/container";
     fsType = "zfs";
   };
