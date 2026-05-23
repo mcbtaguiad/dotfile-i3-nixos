@@ -55,9 +55,6 @@
         ./modules/system/locale.nix
         ./modules/system/ssh.nix
 
-        # network
-        ./modules/network/base.nix
-
         # desktop
         ./modules/desktop/editor.nix
         ./modules/desktop/terminal.nix
