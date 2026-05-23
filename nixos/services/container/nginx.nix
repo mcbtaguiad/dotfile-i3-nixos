@@ -1,19 +1,41 @@
-{ ... }:
+{ config, ... }:
 
 {
-  virtualisation.oci-containers.containers = {
-    nginx = {
-      image = "nginx:alpine";
+  virtualisation.quadlet =
+    let
+      NGINX_VERSION = "latest";
+      DIR_LOCATION = "/srv/data/container/nginx/html";
+      inherit (config.virtualisation.quadlet) networks;
+    in
+    {
+      networks.wireguard-podman.networkConfig.driver = "bridge";
+      containers = {
+        nginx-podman = {
+          containerConfig = {
+            image = "docker.io/nginx:${NGINX_VERSION}";
+            # publishPorts = [
+            #   "127.0.0.1:80:80"
+            # ];
+            volumes = [
+              "${DIR_LOCATION}:/usr/share/nginx/html:z"
+            ];
+            # environmentFiles = [ config.age.secrets.envFile.path ];
+            networks = [ networks.wireguard-podman.ref ];
+            # networks.wg = {
+            #   external = true;
+            #   ipv4.address = "172.30.0.69";
+            # };
 
-      ports = [ "80:80" ];
+            ip = "10.89.0.51";
 
-      volumes = [
-        "/srv/data/container/nginx/html:/usr/share/nginx/html:ro"
-      ];
-
-      extraOptions = [
-        "--restart=always"
-      ];
+            labels = [
+              "wud.tag.include=^v\\\\d+\\\\.\\\\d+\\\\.\\\\d+$"
+            ];
+          };
+          serviceConfig = {
+            Restart = "always";
+          };
+        };
+      };
     };
-  };
 }
