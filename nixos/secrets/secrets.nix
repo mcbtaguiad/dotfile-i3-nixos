@@ -15,4 +15,8 @@ in
     workstation
   ];
 
+  "wireguard-podman-marilag.age".publicKeys = [
+    marilag
+    workstation
+  ];
 }
