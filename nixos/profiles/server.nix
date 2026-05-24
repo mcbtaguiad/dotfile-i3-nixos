@@ -23,6 +23,9 @@
     ../services/container/nginx.nix
     ../services/container/wireguard.nix
 
+    # services
+    ../modules/cockpit-podman.ni
+
   ];
 
   boot = {
