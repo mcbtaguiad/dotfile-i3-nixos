@@ -4,9 +4,9 @@
   system.stateVersion = "25.11";
 
   imports = [
-    ../../profiles/workstation.nix
-    ../../users/workstation.nix
-    ../../pkgs/workstation.nix
+    ../../profiles/sinagtala.nix
+    ../../users/sinagtala.nix
+    ../../pkgs/sinagtala.nix
   ];
 
   programs.nh = {
