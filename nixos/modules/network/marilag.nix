@@ -4,27 +4,57 @@
   networking = {
     hostName = "marilag";
     hostId = "309ea633";
-
-    networking.networkmanager.enable = false;
-
+    useNetworkd = true;
     useDHCP = false;
+    networkmanager.enable = false;
 
-    bridges.br0.interfaces = [ "enp0s31f6" ];
+    wireless.iwd = {
+      enable = true;
+      settings = {
+        Network = {
+          EnableIPv6 = true;
+        };
+        Settings = {
+          AutoConnect = true;
+        };
+      };
+    };
+  };
 
-    interfaces.br0.ipv4.addresses = [
-      {
-        address = "192.168.254.100";
-        prefixLength = 24;
-      }
-    ];
+  systemd.network.enable = true;
 
-    defaultGateway = "192.168.254.254";
+  # Bridge
+  systemd.network.netdevs."br0" = {
+    netdevConfig = {
+      Name = "br0";
+      Kind = "bridge";
+    };
+  };
 
-    nameservers = [
+  systemd.network.networks."10-enp0s31f6" = {
+    matchConfig.Name = "enp0s31f6";
+    networkConfig.Bridge = "br0";
+  };
+
+  systemd.network.networks."20-br0" = {
+    matchConfig.Name = "br0";
+
+    address = [ "192.168.254.100/24" ];
+    gateway = [ "192.168.254.254" ];
+    dns = [
       "1.1.1.1"
       "8.8.8.8"
     ];
-
-    firewall.checkReversePath = "loose";
   };
+
+  systemd.network.networks."30-wlan0" = {
+    matchConfig.Name = "wlan0";
+
+    networkConfig = {
+      DHCP = "ipv4";
+      IPv6AcceptRA = true;
+    };
+  };
+
+  networking.firewall.checkReversePath = "loose";
 }
