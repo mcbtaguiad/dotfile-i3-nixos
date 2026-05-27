@@ -2,7 +2,7 @@
 
 {
   age.secrets.beszel-agent-marilag = {
-    file = ../../secrets/wireguard-podman-marilag.age;
+    file = ../../secrets/beszel-agent-marilag.age;
     mode = "0400";
   };
 
