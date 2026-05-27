@@ -26,6 +26,7 @@
       kind
       cilium-cli
       hubble
+      qbittorrent
       (wrapHelm kubernetes-helm {
         plugins = with pkgs.kubernetes-helmPlugins; [
           helm-secrets
