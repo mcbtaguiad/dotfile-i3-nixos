@@ -10,10 +10,14 @@
 
     # virtualization
     ../modules/virtualization/podman.nix
-    ../modules/virtualization/libvirt.nix
+    # ../modules/virtualization/libvirt.nix
+    ../modules/virtualization/incus.nix
 
     # network
     ../modules/network/marilag.nix
+
+    # security
+    # ../modules/security/firewall/marilag.nix
 
     # tunnel
     ../services/systemd/cloudflared.nix
@@ -24,7 +28,7 @@
     ../services/container/wireguard.nix
 
     # services
-    ../modules/cockpit-podman.ni
+    # ../services/systemd/cockpit.nix
 
   ];
 
