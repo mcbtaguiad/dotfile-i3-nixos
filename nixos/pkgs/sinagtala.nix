@@ -62,6 +62,7 @@
     playerctl
     wireguard-tools
     virt-manager
+    ethtool
 
     chromium
     spotify
