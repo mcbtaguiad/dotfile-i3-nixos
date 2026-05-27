@@ -14,6 +14,7 @@
         Option "ScrollMethod" "button"
         Option "ScrollButton" "2"
         Option "MiddleEmulation" "false"
+        Option "NaturalScrolling" "true"
       ''
     ];
 
