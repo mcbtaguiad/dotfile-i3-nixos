@@ -5,17 +5,17 @@
     enable = true;
 
     extraCommands = ''
-      iptables -t nat -A PREROUTING -i wg0 -p tcp --dport 9090 \
-        -j DNAT --to-destination 192.168.254.100:9090
+      iptables -t nat -A PREROUTING -i wg0 -p tcp --dport 8443 \
+        -j DNAT --to-destination 192.168.254.100:8443
 
-      iptables -A FORWARD -p tcp -d 192.168.254.100 --dport 9090 -j ACCEPT
+      iptables -A INPUT -i wg0 -p tcp --dport 8443 -d 192.168.254.100 -j ACCEPT
     '';
 
     extraStopCommands = ''
-      iptables -t nat -D PREROUTING -i wg0 -p tcp --dport 9090 \
-        -j DNAT --to-destination 192.168.254.100:9090
+      iptables -t nat -D PREROUTING -i wg0 -p tcp --dport 8443 \
+        -j DNAT --to-destination 192.168.254.100:8443 || true
 
-      iptables -D FORWARD -p tcp -d 192.168.254.100 --dport 9090 -j ACCEPT
+      iptables -D INPUT -i wg0 -p tcp --dport 8443 -d 192.168.254.100 -j ACCEPT || true
     '';
   };
 }
