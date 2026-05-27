@@ -1,4 +1,3 @@
-# To edit use your text editor application, for example Nano
 {
   lib,
   stdenv,
