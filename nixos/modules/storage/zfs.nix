@@ -19,10 +19,10 @@
     fsType = "zfs";
   };
 
-  fileSystems."/var/lib/libvirt/images" = {
-    device = "tank/vm";
-    fsType = "zfs";
-  };
+  # fileSystems."/var/lib/libvirt/images" = {
+  #   device = "tank/vm";
+  #   fsType = "zfs";
+  # };
 
   fileSystems."/srv/data" = {
     device = "tank/data";
