@@ -3,7 +3,7 @@
 {
   networking = {
     hostName = "sinagtala";
-    networkmanager.enable = false;
+    networkmanager.enable = true;
 
     firewall.checkReversePath = "loose";
   };
