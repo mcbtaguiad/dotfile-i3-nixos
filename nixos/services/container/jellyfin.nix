@@ -1,0 +1,43 @@
+{ config, ... }:
+
+{
+  virtualisation.quadlet =
+    let
+      inherit (config.virtualisation.quadlet) networks;
+    in
+    {
+      networks.wireguard-podman.networkConfig.driver = "bridge";
+
+      containers.jellyfin-podman = {
+        containerConfig = {
+          image = "docker.io/jellyfin/jellyfin:latest";
+
+          # publishPorts = [
+          #   "127.0.0.1:51820:51820/udp"
+          # ];
+
+          volumes = [
+            "/srv/data/container/jellyfin/config:/config:z"
+            "/srv/data/container/jellyfin/cache:/cache:z"
+            "/srv/nfs/luna:/media:z"
+          ];
+
+          devices = [
+            "/dev/dri:/dev/dri/"
+          ];
+
+          networks = [ networks.wireguard-podman.ref ];
+
+          ip = "10.89.0.52";
+
+          labels = [
+            "wud.tag.include=^v\\d+\\.\\d+\\.\\d+$"
+          ];
+        };
+
+        serviceConfig = {
+          Restart = "unless-stopped";
+        };
+      };
+    };
+}

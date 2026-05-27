@@ -27,6 +27,7 @@
     # containers
     ../services/container/nginx.nix
     ../services/container/wireguard.nix
+    ../services/container/jellyfin.nix
 
     # services
     # ../services/systemd/cockpit.nix
