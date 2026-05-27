@@ -7,6 +7,7 @@
 
     # storage
     ../modules/storage/zfs.nix
+    ../modules/storage/nfs.nix
 
     # virtualization
     ../modules/virtualization/podman.nix
@@ -29,6 +30,7 @@
 
     # services
     # ../services/systemd/cockpit.nix
+    ../services/systemd/beszel-agent.nix
 
   ];
 
