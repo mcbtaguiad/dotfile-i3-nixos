@@ -19,4 +19,9 @@ in
     marilag
     workstation
   ];
+
+  "beszel-agent-marilag.age".publicKeys = [
+    marilag
+    workstation
+  ];
 }
