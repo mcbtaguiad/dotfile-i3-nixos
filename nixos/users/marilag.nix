@@ -9,8 +9,7 @@
       "networkmanager"
       "wheel"
       "video"
-      "libvirtd"
-      "kvm"
+      "incus-admin"
     ];
     shell = pkgs.zsh;
   };
