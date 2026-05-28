@@ -24,4 +24,9 @@ in
     marilag
     workstation
   ];
+
+  "immich-secret-marilag.age".publicKeys = [
+    marilag
+    workstation
+  ];
 }
