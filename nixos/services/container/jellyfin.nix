@@ -8,7 +8,7 @@
     {
       networks.wireguard-podman.networkConfig.driver = "bridge";
 
-      containers.jellyfin-podman = {
+      containers.jellyfin = {
         containerConfig = {
           image = "docker.io/jellyfin/jellyfin:latest";
 
@@ -23,7 +23,8 @@
           ];
 
           devices = [
-            "/dev/dri:/dev/dri/"
+            # "/dev/dri:/dev/dri/"
+            "nvidia.com/gpu=all"
           ];
 
           networks = [ networks.wireguard-podman.ref ];
@@ -37,6 +38,8 @@
 
         serviceConfig = {
           Restart = "unless-stopped";
+          CPUQuota = "400%";
+          MemoryMax = "8G";
         };
       };
     };
