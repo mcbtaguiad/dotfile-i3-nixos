@@ -21,13 +21,15 @@
     # ../modules/security/firewall/marilag.nix
 
     # tunnel
-    ../services/systemd/cloudflared.nix
+    # ../services/systemd/cloudflared.nix
     ../services/systemd/wireguard.nix
+    ../services/container/cloudflared.nix
 
     # containers
     ../services/container/nginx.nix
     ../services/container/wireguard.nix
     ../services/container/jellyfin.nix
+    ../services/container/immich.nix
 
     # services
     # ../services/systemd/cockpit.nix
