@@ -29,4 +29,9 @@ in
     marilag
     workstation
   ];
+
+  "cloudflared-podman-marilag.age".publicKeys = [
+    marilag
+    workstation
+  ];
 }
