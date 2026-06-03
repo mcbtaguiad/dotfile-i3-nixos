@@ -17,12 +17,12 @@
         containerConfig = {
           image = "cloudflare/cloudflared:latest";
 
-          EnvironmentFile = "/run/agenix/cloudflared-podman-marilag";
+          environmentFiles = [ "/run/agenix/cloudflared-podman-marilag" ];
 
-          Exec = "tunnel --no-autoupdate run";
-
-          PodmanArgs = [
-            "--env=TUNNEL_TOKEN"
+          exec = [
+            "tunnel"
+            "--no-autoupdate"
+            "run"
           ];
 
           networks = [ networks.cloudflared-podman.ref ];
