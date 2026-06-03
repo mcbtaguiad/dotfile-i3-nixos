@@ -17,6 +17,10 @@
 
   systemd.user.services.podman.enable = true;
 
+  hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.mount-nvidia-executables = true;
+  hardware.nvidia-container-toolkit.mount-nvidia-docker-1-directories = true;
+
   # Useful other development tools
   environment.systemPackages = with pkgs; [
     dive # look into docker image layers
