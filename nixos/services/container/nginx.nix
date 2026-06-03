@@ -10,7 +10,7 @@
     {
       networks.wireguard-podman.networkConfig.driver = "bridge";
       containers = {
-        nginx-podman = {
+        nginx = {
           containerConfig = {
             image = "docker.io/nginx:${NGINX_VERSION}";
             # publishPorts = [
