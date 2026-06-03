@@ -15,9 +15,9 @@
       inherit (config.virtualisation.quadlet) networks;
     in
     {
-      networks.wireguard-podman.networkConfig.driver = "bridge";
+      networks.cloudflared-podman.networkConfig.driver = "bridge";
       containers = {
-        immich-server-podman = {
+        immich_server = {
           containerConfig = {
             image = "ghcr.io/immich-app/immich-server:${IMMICH_IMAGE_VERSION}";
             # publishPorts = [
@@ -28,8 +28,8 @@
               "/etc/localtime:/etc/localtime:ro"
             ];
             environmentFiles = [ "/run/agenix/immich-secret-marilag" ];
-            networks = [ networks.wireguard-podman.ref ];
-            ip = "10.89.0.53";
+            networks = [ networks.cloudflared-podman.ref ];
+            ip = "10.89.1.51";
             labels = [
               "wud.tag.include=^v\\d+\\.\\d+\\.\\d+$"
             ];
@@ -39,24 +39,30 @@
           };
           unitConfig = {
             After = [
-              "redis.service"
-              "database.service"
+              "immich_redis.service"
+              "immich_postgres.service"
             ];
             Requires = [
-              "redis.service"
-              "database.service"
+              "immich_redis.service"
+              "immich_postgres.service"
             ];
           };
         };
 
-        immich-machine-learning-podman = {
+        immich_machine_learning = {
           containerConfig = {
             image = "ghcr.io/immich-app/immich-machine-learning:${IMMICH_IMAGE_VERSION}";
             volumes = [
               "${STACK_PATH}/model-cache:/cache:z"
             ];
             environmentFiles = [ "/run/agenix/immich-secret-marilag" ];
-            networks = [ networks.wireguard-podman.ref ];
+            networks = [ networks.cloudflared-podman.ref ];
+
+            devices = [
+              # "/dev/dri:/dev/dri/"
+              "nvidia.com/gpu=all"
+            ];
+
             labels = [
               "wud.tag.include=^v\\d+\\.\\d+\\.\\d+$"
             ];
@@ -66,11 +72,11 @@
           };
         };
 
-        redis-podman = {
+        immich_redis = {
           containerConfig = {
             image = "docker.io/valkey/valkey:9@sha256:3b55fbaa0cd93cf0d9d961f405e4dfcc70efe325e2d84da207a0a8e6d8fde4f9";
             healthCmd = "redis-cli ping || exit 1";
-            networks = [ networks.wireguard-podman.ref ];
+            networks = [ networks.cloudflared-podman.ref ];
             labels = [
               "wud.tag.include=^v\\d+\\.\\d+\\.\\d+$"
             ];
@@ -80,7 +86,7 @@
           };
         };
 
-        database-podman = {
+        immich_postgres = {
           containerConfig = {
             image = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23";
             volumes = [
@@ -93,7 +99,7 @@
             #   POSTGRES_DB = "${DB_DATABASE_NAME}";
             #   POSTGRES_INITDB_ARGS = "--data-checksums";
             # };
-            networks = [ networks.wireguard-podman.ref ];
+            networks = [ networks.cloudflared-podman.ref ];
             labels = [
               "wud.tag.include=^v\\d+\\.\\d+\\.\\d+$"
             ];
