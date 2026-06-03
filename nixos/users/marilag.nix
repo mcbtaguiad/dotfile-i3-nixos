@@ -9,6 +9,7 @@
       "networkmanager"
       "wheel"
       "video"
+      "incus-admin"
     ];
     shell = pkgs.zsh;
   };

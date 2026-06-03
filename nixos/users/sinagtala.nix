@@ -9,6 +9,7 @@
       "networkmanager"
       "wheel"
       "video"
+      "adbusers"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [
@@ -25,6 +26,7 @@
       kind
       cilium-cli
       hubble
+      qbittorrent
       (wrapHelm kubernetes-helm {
         plugins = with pkgs.kubernetes-helmPlugins; [
           helm-secrets

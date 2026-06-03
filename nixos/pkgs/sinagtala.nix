@@ -1,16 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ../modules/desktop.nix
-    ../modules/audio.nix
-    ../modules/terminal.nix
-    ../modules/editor.nix
-  ];
-  networking = {
-    hostName = "sinagtala";
-  };
-
   environment.systemPackages = with pkgs; [
     (python3.withPackages (
       ps: with ps; [
@@ -71,6 +61,8 @@
     mpc
     playerctl
     wireguard-tools
+    virt-manager
+    ethtool
 
     chromium
     spotify

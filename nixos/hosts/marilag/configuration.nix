@@ -4,8 +4,9 @@
   system.stateVersion = "25.11";
 
   imports = [
-    ../../profiles/server.nix
-    ../../users/server.nix
+    ../../profiles/marilag.nix
+    ../../users/marilag.nix
+    ../../pkgs/marilag.nix
   ];
 
   programs.nh = {
