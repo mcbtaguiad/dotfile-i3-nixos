@@ -48,7 +48,7 @@
         # hardware
         ./modules/hardware/kernel_boot.nix
         ./modules/hardware/power.nix
-        ./modules/hardware/thinkpad.nix
+        # ./modules/hardware/thinkpad.nix
 
         # system
         ./modules/system/font.nix
@@ -65,7 +65,7 @@
       nixosConfigurations = {
 
         ########################
-        # SINAGTALA
+        # SINAGTALA            #
         ########################
         sinagtala = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -88,7 +88,29 @@
         };
 
         ########################
-        # MARILAG
+        # MALAYA               #
+        ########################
+        malaya = nixpkgs.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = {
+            pkgs-unstable = unstableFor system;
+            inherit agenix;
+          };
+
+          modules = commonModules ++ [
+            quadlet-nix.nixosModules.quadlet
+            agenix.nixosModules.default
+            ./hosts/malaya/configuration.nix
+            ./hosts/malaya/hardware-configuration.nix
+
+            {
+              environment.systemPackages = [ agenix.packages.${system}.default ];
+            }
+          ];
+        };
+        ########################
+        # MARILAG              #
         ########################
         marilag = nixpkgs.lib.nixosSystem {
           inherit system;
