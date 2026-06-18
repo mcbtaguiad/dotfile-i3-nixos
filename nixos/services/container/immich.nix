@@ -8,7 +8,7 @@
 
   virtualisation.quadlet =
     let
-      UPLOAD_LOCATION = "/srv/nfs/luna/Immich";
+      UPLOAD_LOCATION = "/srv/data/container/immich/data";
       DB_DATA_LOCATION = "${STACK_PATH}/pgdata";
       IMMICH_IMAGE_VERSION = "release";
       STACK_PATH = "/srv/data/container/immich";
