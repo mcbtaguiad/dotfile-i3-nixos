@@ -13,6 +13,7 @@
     # system
     # ../modules/system/android.nix
     ../modules/system/steam.nix
+    ../modules/system/openrgb.nix
 
     # network
     ../modules/network/malaya.nix
