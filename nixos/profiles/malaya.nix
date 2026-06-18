@@ -4,6 +4,7 @@
   imports = [
     # hardware
     ../modules/hardware/audio.nix
+    ../modules/hardware/bluetooth.nix
     ../modules/hardware/optimus.nix
 
     # desktop
