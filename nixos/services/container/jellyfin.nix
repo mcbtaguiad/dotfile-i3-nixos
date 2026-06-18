@@ -19,7 +19,7 @@
           volumes = [
             "/srv/data/container/jellyfin/config:/config:z"
             "/srv/data/container/jellyfin/cache:/cache:z"
-            "/srv/nfs/luna:/media:z"
+            "/srv/data/container/jellyfin/media:/media:z"
           ];
 
           devices = [

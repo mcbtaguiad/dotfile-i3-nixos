@@ -70,7 +70,7 @@
           serviceConfig = {
             Restart = "always";
             CPUQuota = "400%";
-            MemoryMax = "16G";
+            MemoryMax = "8G";
           };
         };
 
