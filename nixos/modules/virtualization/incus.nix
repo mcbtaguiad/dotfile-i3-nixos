@@ -32,11 +32,17 @@
         ];
         storage_pools = [
           {
+            # name = "default";
+            # driver = "zfs";
+            #
+            # config = {
+            #   source = "tank/incus";
+            # };
             name = "default";
-            driver = "zfs";
+            driver = "dir";
 
             config = {
-              source = "tank/incus";
+              source = "/var/lib/incus/storage-pools/default";
             };
           }
         ];
