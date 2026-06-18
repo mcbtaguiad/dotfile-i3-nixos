@@ -12,6 +12,7 @@
 
     # system
     # ../modules/system/android.nix
+    ../modules/system/steam.nix
 
     # network
     ../modules/network/malaya.nix
