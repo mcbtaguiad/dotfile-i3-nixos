@@ -4,6 +4,7 @@
   imports = [
     # hardware
     ../modules/hardware/nvidia.nix
+    ../modules/hardware/thinkpad.nix
 
     # storage
     ../modules/storage/zfs.nix

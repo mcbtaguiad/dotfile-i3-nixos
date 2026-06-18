@@ -4,6 +4,7 @@
   imports = [
     # hardware
     ../modules/hardware/audio.nix
+    ../modules/hardware/thinkpad.nix
 
     # desktop
     ../modules/desktop/gdm.nix
