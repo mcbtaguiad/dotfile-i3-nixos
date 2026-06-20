@@ -10,7 +10,7 @@
 
     # desktop
     ../modules/desktop/gdm.nix
-    # ../modules/desktop/i3_x.nix
+    ../modules/desktop/i3_x.nix
 
     # system
     # ../modules/system/android.nix
