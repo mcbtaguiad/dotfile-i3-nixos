@@ -6,10 +6,11 @@
     ../modules/hardware/audio.nix
     ../modules/hardware/bluetooth.nix
     ../modules/hardware/optimus.nix
+    ../modules/hardware/kernel_boot.nix
 
     # desktop
     ../modules/desktop/gdm.nix
-    ../modules/desktop/i3_x.nix
+    # ../modules/desktop/i3_x.nix
 
     # system
     # ../modules/system/android.nix

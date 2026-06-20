@@ -5,6 +5,7 @@
     # hardware
     ../modules/hardware/nvidia.nix
     ../modules/hardware/thinkpad.nix
+    ../modules/hardware/kernel_boot.nix
 
     # storage
     ../modules/storage/zfs.nix

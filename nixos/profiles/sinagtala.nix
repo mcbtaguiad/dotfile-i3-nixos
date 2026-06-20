@@ -5,6 +5,7 @@
     # hardware
     ../modules/hardware/audio.nix
     ../modules/hardware/thinkpad.nix
+    ../modules/hardware/kernel_boot.nix
 
     # desktop
     ../modules/desktop/gdm.nix
