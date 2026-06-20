@@ -10,12 +10,6 @@
       "mem_sleep_default=deep"
     ];
 
-    kernelModules = [ "thinkpad_acpi" ];
-
-    extraModprobeConfig = ''
-      options thinkpad_acpi fan_control=1
-    '';
-
     kernelPackages = pkgs.linuxPackages_6_18;
   };
 
