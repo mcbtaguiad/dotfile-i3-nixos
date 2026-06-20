@@ -63,6 +63,9 @@
     wireguard-tools
     virt-manager
     ethtool
+    efibootmgr
+    ntfs3g
+    woeusb-ng
 
     chromium
     spotify
