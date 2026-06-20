@@ -46,7 +46,7 @@
 
       commonModules = [
         # hardware
-        ./modules/hardware/kernel_boot.nix
+        # ./modules/hardware/kernel_boot.nix
         ./modules/hardware/power.nix
         # ./modules/hardware/thinkpad.nix
 
