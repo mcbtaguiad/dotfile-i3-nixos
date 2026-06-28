@@ -10,6 +10,7 @@
 
     # desktop
     ../modules/desktop/gdm.nix
+    ../modules/desktop/cosmic.nix
     ../modules/desktop/i3_x.nix
 
     # system
